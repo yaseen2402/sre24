@@ -52,21 +52,18 @@ export default function LandingPage() {
       
       <h1>Keep the Vibes Going in Production</h1>
       <p style={{ maxWidth: '600px', margin: '0 auto 3rem auto', fontSize: '1.2rem' }}>
-        You focus on vibe coding and shipping fast. SRE24 acts as your autonomous safety net—intercepting Dynatrace alerts, investigating root causes, and pushing code fixes while you sleep.
+        Vibe code with confidence. SRE24 acts as your autonomous safety net intercepting alerts, investigating root causes, and pushing fixes while you sleep.
       </p>
       
       <button 
         className="btn-primary" 
         onClick={handleCreateWorkspace}
         disabled={loading}
-        style={{ fontSize: '1.2rem', padding: '16px 40px' }}
+        style={{ fontSize: '1.2rem', padding: '16px 40px', minWidth: '200px' }}
       >
         {loading ? <span className="loader"></span> : 'Get Started'}
       </button>
       
-      <p style={{ fontSize: '0.9rem', marginTop: '1rem', color: 'var(--text-secondary)' }}>
-        No credit card required. Connect Dynatrace and GitHub in 60 seconds.
-      </p>
     </div>
   );
 }
