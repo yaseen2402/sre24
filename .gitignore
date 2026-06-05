@@ -1,0 +1,18 @@
+# Environment variables and secrets
+.env
+env.yaml
+*.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# SQLite
+*.sqlite3
+*.db
+
+dummy_app/
+trigger_dynatrace.py
+commands.md

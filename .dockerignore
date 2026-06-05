@@ -1,0 +1,28 @@
+# Ignore frontend code and node modules
+frontend/
+node_modules/
+
+# Ignore test apps
+dummy_app/
+
+# Ignore Python virtual environments
+venv/
+.venv/
+env/
+
+# Ignore compiled python files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore environment variables (except env.yaml if we need it for build, but usually pass via flag)
+.env
+*.env
+
+# Ignore git metadata
+.git/
+.gitignore
+
+# Ignore local SQLite DBs
+*.sqlite3
+*.db
