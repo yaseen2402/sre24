@@ -244,3 +244,13 @@ p {
   color: var(--danger);
   border-color: rgba(239, 68, 68, 0.3);
 }
+
+/* Hide scrollbar for a sleek glassmorphism aesthetic */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html, body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

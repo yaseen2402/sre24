@@ -227,10 +227,10 @@ Please execute the full SRE response workflow:
     
     logger.info(f"🧠 Sending problem {payload.PID} to agent for analysis...")
     
-    # Run the agent synchronously to bypass the aiohttp ClientConnectorDNSError bug on Windows
+    # Run the agent asynchronously to preserve thread-local ContextVars for multi-tenancy
     final_response = ""
     try:
-        for event in runner.run(
+        async for event in runner.run_async(
             session_id=session.id,
             user_id="dynatrace_webhook",
             new_message=types.Content(
@@ -238,7 +238,7 @@ Please execute the full SRE response workflow:
                 parts=[types.Part(text=user_message)],
             ),
         ):
-            if event.is_final_response():
+            if event.is_final_response() and event.content:
                 for part in event.content.parts:
                     if part.text:
                         final_response += part.text
