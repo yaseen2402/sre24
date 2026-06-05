@@ -9,6 +9,27 @@ import logging
 import os
 import time
 import traceback
+import threading
+import contextvars
+
+# Automatically propagate ContextVars to all new threads
+# This ensures ADK's background thread can securely access tenant-specific DB config
+if not getattr(threading.Thread, "_contextvars_patched", False):
+    _original_start = threading.Thread.start
+    def _patched_start(self, *args, **kwargs):
+        self._context = contextvars.copy_context()
+        return _original_start(self, *args, **kwargs)
+
+    threading.Thread.start = _patched_start
+
+    _original_run = threading.Thread.run
+    def _patched_run(self, *args, **kwargs):
+        if hasattr(self, '_context'):
+            return self._context.run(_original_run, self, *args, **kwargs)
+        return _original_run(self, *args, **kwargs)
+
+    threading.Thread.run = _patched_run
+    threading.Thread._contextvars_patched = True
 import uuid
 import dotenv
 from contextlib import asynccontextmanager
@@ -163,7 +184,9 @@ async def _process_problem(payload: DynatraceWebhookPayload, tenant_id: str = No
             else:
                 logger.warning(f"⚠️ Tenant {tenant_id} not found in database. Using default environment variables.")
 
-        # Set the thread-local context for this background task
+        # Set the thread-local context for this background task.
+        # Thanks to the threading monkeypatch at the top of this file,
+        # this ContextVar will safely propagate into the ADK's isolated thread!
         token = tenant_context.set(overrides)
         
         logger.info(f"🔍 Processing problem {payload.PID}: {payload.ProblemTitle}")

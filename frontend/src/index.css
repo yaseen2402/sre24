@@ -110,6 +110,14 @@ p {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.btn-secondary:active {
+  transform: scale(0.95);
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
 /* Forms */
 .form-group {
   margin-bottom: 1.5rem;

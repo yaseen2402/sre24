@@ -227,10 +227,10 @@ Please execute the full SRE response workflow:
     
     logger.info(f"🧠 Sending problem {payload.PID} to agent for analysis...")
     
-    # Run the agent asynchronously to preserve thread-local ContextVars for multi-tenancy
+    # Run the agent synchronously for maximum stability (prevents async event loop hanging)
     final_response = ""
     try:
-        async for event in runner.run_async(
+        for event in runner.run(
             session_id=session.id,
             user_id="dynatrace_webhook",
             new_message=types.Content(
